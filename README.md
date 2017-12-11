@@ -25,7 +25,7 @@ App principals.
   :white_check_mark: BYOBacking service
 1. **Build, release, run**<br>
   Strictly separate build and run stages<br>
-  :white_check_mark: gulp, bin/image, bin/stevedore, bin/deploy
+  :white_check_mark: gulp, bin/image, bin/elasticdock, bin/deploy
 1. **Processes**<br>
   Execute the app as one or more stateless processes<br>
   :white_check_mark: Thanks Docker!
@@ -102,14 +102,14 @@ These steps will get you running locally:
 1. Create a dev python environment: `pyvenv environments/dev/pyvenv`
 1. `./bin/image dev build` will create "dev" Docker images with all
    dependencies installed.
-1. `./bin/stevedore dev start` will run the dev Docker containers, open
+1. `./bin/elasticdock dev start` will run the dev Docker containers, open
    the browser, and tail the logs. At this point you're viewing running
    source code!
-  * `ctrl+c` stops the logs `./bin/stevedore dev stop` will stop the Docker
+  * `ctrl+c` stops the logs `./bin/elasticdock dev stop` will stop the Docker
     containers.
-  * `./bin/stevedore dev logs` resumes log tailing.
+  * `./bin/elasticdock dev logs` resumes log tailing.
 1. Optionally, to build frontend assets (CSS, images, etc):
-  * Run `./bin/stevedore dev build:dev`
+  * Run `./bin/elasticdock dev build:dev`
 
 You can typically connect to your web application at:
 http://192.168.99.100/xyzzy.
