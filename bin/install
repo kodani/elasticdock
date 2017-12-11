@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
-# OS X development initialization script.
-# Author Ron. A @0xADADA
+# development initialization script for linux and mac.
+# Author Aniket Patel @kodani
 
+#check which machine user is running
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+esac
+echo "Intalling dev tools for your ${machine} machine"
 
 # Install homebrew is installed.development machine local dependencies
-if ! [ -x /usr/local/bin/brew ]; then
+if ! [ -x /usr/local/bin/brew ] && [ "$machine" == "Mac" ]; then
     echo "homebrew must be installed. Please install and try this again."
     echo "brew is typically installed with the following command:"
     echo "$ ruby -e \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
@@ -12,41 +19,63 @@ if ! [ -x /usr/local/bin/brew ]; then
     open "http://brew.sh/"
     exit 1
 fi
-if ! hash docker-machine 2>/dev/null; then
+
+if ! [hash docker-machine 2>/dev/null] && [ "$machine" == "Mac" ]; then
     echo "Installing docker-machine..."
     brew install docker-machine
     # Start docker-machine via launchd at login
     ln -sfv /usr/local/opt/docker-machine/*.plist ~/Library/LaunchAgents
 fi
-if ! hash docker-compose 2>/dev/null; then
+if ! [hash docker-machine 2>/dev/null] && [ "$machine" == "Mac" ]; then
+    echo "Installing Docker..."
+    apt-get update
+    apt-get install apt-transport-https ca-certificates curl software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    apt-get update
+    apt-get install docker-ce
+fi
+
+if ! [ hash docker-compose 2>/dev/null ] && [ "$machine" == "Mac" ]; then
     echo "Installing docker-compose..."
     brew install docker-compose
 fi
-if ! hash eb 2>/dev/null; then
+if ! [ hash docker-compose 2>/dev/null ] && [ "$machine" == "Mac" ]; then
+    echo "Installing docker-compose..."
+    brew install docker-compose
+fi
+
+if ! [ hash eb 2>/dev/null ] && [ "$machine" == "Mac" ]; then
     echo "Installing Amazon Elastic Beanstalk CLI..."
     brew install aws-elasticbeanstalk
 fi
-
-# Create Docker VM if it doesn't exist
-docker-machine ls|grep "docker-vm"
-if [[ $? != 0 ]]; then
-    echo "Creating Docker host virtual machine..."
-    docker-machine create --driver virtualbox docker-vm
-    echo "Docker host virtual machine created."
-else
-    echo "Docker host virtual machine found."
+if ! [ hash eb 2>/dev/null ] && [ "$machine" == "Linux" ]; then
+    echo "Installing Amazon Elastic Beanstalk CLI..."
+    pip install awsebcli
 fi
 
-# Start Docker VM if it is not running.
-if [ -z "$(docker-machine ls | grep -i running)" ]; then
-    echo "Docker host virtual machine not running, booting now..."
-    docker-machine start docker-vm
-    echo "Docker host virtual machine is running."
-else
-    echo "Docker host virtual machine is running."
+if [ "$machine" == "Mac" ]; then
+    # Create Docker VM if it doesn't exist
+    docker-machine ls|grep "docker-vm"
+    if [[ $? != 0 ]]; then
+        echo "Creating Docker host virtual machine..."
+        docker-machine create --driver virtualbox docker-vm
+        echo "Docker host virtual machine created."
+    else
+        echo "Docker host virtual machine found."
+    fi
+
+    # Start Docker VM if it is not running.
+    if [ -z "$(docker-machine ls | grep -i running)" ]; then
+        echo "Docker host virtual machine not running, booting now..."
+        docker-machine start docker-vm
+        echo "Docker host virtual machine is running."
+    else
+        echo "Docker host virtual machine is running."
+    fi
 fi
 
 # Set the Docker environment variables in your shell
 echo "Your system is setup."
 echo "To run a development environment, try running:"
-echo "$ ./bin/stevedore dev start"
+echo "$ ./bin/elasticdock dev start"

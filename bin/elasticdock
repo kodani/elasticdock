@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Stevedore - Simple Docker container management.
-# Author Ron. A @0xADADA
+# elasticdock - Simple Docker container management.
+# Author Aniket Patel @kodani
 
 
 # Print out usage documentation.
 help_usage() {
-    echo "Stevedore (stēˈvĭ-dôr) - Manhandling your containers."
+    echo "elasticdock (stēˈvĭ-dôr) - Manhandling your containers."
     echo "A simple utility to start, stop and interact with Docker containers."
     echo ""
-    echo "Usage: $ stevedore <environment> COMMAND"
+    echo "Usage: $ elasticdock <environment> COMMAND"
     echo ""
     help_commands
     echo "e.g."
@@ -30,6 +30,13 @@ help_commands() {
     echo ""
 }
 
+#check which machine user is running
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+esac
+
 # Print out not-running error.
 help_not_running() {
     echo ""
@@ -47,8 +54,10 @@ awseb() {
 shellinit() {
     # Set the Docker environment variables in your shell,
     # if docker-machine exists
-    if hash docker-machine 2> /dev/null; then
-        eval "$(docker-machine env docker-vm)"
+    if [ "$machine" == "Mac" ]; then
+        if hash docker-machine 2> /dev/null; then
+            eval "$(docker-machine env docker-vm)"
+        fi
     fi
 }
 

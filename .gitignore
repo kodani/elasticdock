@@ -1,5 +1,6 @@
 # .gitignore
-
+# pycharm shit
+.idea
 # Ignore application dependencies
 # We don't want deps. built for OS X/Windows winding up on a linux
 # instance, etc. Let the container provision its own dependencies.
