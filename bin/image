@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Docker image management.
-# Author Ron. A @0xADADA
+# Author Ron. A @mehuaniket
 
 
 # Print out help documentation

@@ -1,6 +1,6 @@
 'use strict';
 /*! dockdj tasks
- * @author Ron. A @0xADADA
+ * @author Ron. A @mehuaniket
  * MIT License
  */
 

@@ -34,7 +34,7 @@
     "containerDefinitions": [
         {
             "name": "django",
-            "image": "0xadada/dockdj:latest",
+            "image": "mehuaniket/dockdj:latest",
             "essential": true,
             "memory": 512,
             "mountPoints": [

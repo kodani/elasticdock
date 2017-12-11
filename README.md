@@ -131,8 +131,8 @@ testing and deploying.
 
 ## Authors
 
-* [Ron. A](https://github.com/0xadada) -
-  [@0xadada](http://twitter.com/0xadada)
+* [Aniket Patel](https://github.com/kodani) -
+  [@mehuaniket](http://twitter.com/mehuaniket)
 
 
 ## License
